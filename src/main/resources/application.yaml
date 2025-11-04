@@ -1,4 +1,18 @@
 spring:
-  application:
-    name: tryout-spring-boot-batch
-
+  batch:
+    job:
+      enabled: false    # disable auto-run, we’ll launch manually
+    jdbc:
+      initialize-schema: always
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: false     # optional, to inspect tables in browser
+#logging:
+#  level:
+#    org.springframework.jdbc.core: DEBUG
+#    org.springframework.batch.core.repository.support: DEBUG
