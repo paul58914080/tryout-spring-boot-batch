@@ -1,13 +1,11 @@
-package edu.tryoutspringbootbatch;
+package edu.tryoutspringbootbatch.config;
 
 
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.sql.DataSource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Component;
-
-import javax.sql.DataSource;
 
 /**
  * Forces Spring Batch schema creation on startup for H2.
@@ -15,8 +13,11 @@ import javax.sql.DataSource;
 @Component
 public class H2SchemaInitializer {
 
-  @Autowired
-  private DataSource dataSource;
+  private final DataSource dataSource;
+
+  private H2SchemaInitializer(DataSource dataSource) {
+    this.dataSource = dataSource;
+  }
 
   @PostConstruct
   public void initializeSchema() {

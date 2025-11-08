@@ -1,4 +1,4 @@
-package edu.tryoutspringbootbatch;
+package edu.tryoutspringbootbatch.config;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -17,21 +17,18 @@ public class BatchConfig {
 
   @Bean
   public Job simpleJob(JobRepository jobRepository, Step simpleStep) {
-    return new JobBuilder("simpleJob", jobRepository)
-        .start(simpleStep)
-        .build();
+    return new JobBuilder("simpleJob", jobRepository).start(simpleStep).build();
   }
 
   @Bean
   public Step simpleStep(JobRepository jobRepository,
       PlatformTransactionManager transactionManager) {
-    return new StepBuilder("simpleStep", jobRepository)
-        .tasklet((contribution, chunkContext) -> {
-          System.out.println("✅ Starting batch process...");
-          System.out.println("Hello from Spring Batch!");
-          System.out.println("✅ Batch process finished.");
-          return RepeatStatus.FINISHED;
-        }, transactionManager)
-        .build();
+    return new StepBuilder("simpleStep", jobRepository).tasklet((contribution,
+        chunkContext) -> {
+      System.out.println("✅ Starting batch process...");
+      System.out.println("Hello from Spring Batch!");
+      System.out.println("✅ Batch process finished.");
+      return RepeatStatus.FINISHED;
+    }, transactionManager).build();
   }
 }
