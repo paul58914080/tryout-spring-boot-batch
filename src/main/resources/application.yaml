@@ -1,4 +1,8 @@
+---
 spring:
+  config:
+    activate:
+      on-profile: h2
   batch:
     job:
       enabled: false    # disable auto-run, we’ll launch manually
@@ -16,3 +20,32 @@ spring:
 #  level:
 #    org.springframework.jdbc.core: DEBUG
 #    org.springframework.batch.core.repository.support: DEBUG
+---
+spring:
+  config:
+    activate:
+      on-profile: pg
+  application:
+    name: tryout-spring-boot-batch
+  datasource:
+    diver-class-name: ${DB_DRIVER_CLASS_NAME:org.postgresql.Driver}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/batch_database?currentSchema=batch_schema}
+    username: ${DB_USERNAME:batch_user}
+    password: ${DB_PASSWORD:password}
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: ${JPA_SHOW_SQL:false}
+    properties:
+      hibernate:
+        default_schema: ${DB_SCHEMA:batch_schema}
+        show_sql: ${JPA_SHOW_SQL:false}
+        use_sql_comments: ${JPA_SHOW_SQL:false}
+        format_sql: ${JPA_SHOW_SQL:false}
+  batch:
+    job:
+      enabled: ${BATCH_JOB_ENABLED:false}
+    jdbc:
+      initialize-schema: ${BATCH_JDBC_INITIALIZE_SCHEMA:always}  # always, never, embedded
