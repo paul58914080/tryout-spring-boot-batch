@@ -9,6 +9,7 @@ import net.lbruun.springboot.preliquibase.PreLiquibaseAutoConfiguration;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
+@SpringBatchTest
 @ActiveProfiles("test")
 public class BatchBootTest {
 
@@ -29,6 +31,7 @@ public class BatchBootTest {
   @TestConfiguration
   @ImportAutoConfiguration(PreLiquibaseAutoConfiguration.class)
   static class TestConfig {
+
     @Bean
     @Primary
     public DataSource dataSource() throws Exception {
@@ -49,7 +52,8 @@ public class BatchBootTest {
     try (Connection c = dataSource.getConnection()) {
       DatabaseMetaData meta = c.getMetaData();
       ResultSet rs = meta.getTables(null, null, "t_product", null);
-      Assertions.assertThat(rs.next()).as("T_PRODUCT table should exist from Liquibase changelog").isTrue();
+      Assertions.assertThat(rs.next()).as("T_PRODUCT table should exist from Liquibase changelog")
+          .isTrue();
       Assertions.assertThat(meta.getURL())
           .contains("jdbc:postgresql")
           .as("Should be using embedded Postgres, not H2");
@@ -61,7 +65,8 @@ public class BatchBootTest {
     try (Connection c = dataSource.getConnection()) {
       DatabaseMetaData meta = c.getMetaData();
       ResultSet rs = meta.getTables(null, null, "batch_job_instance", null);
-      Assertions.assertThat(rs.next()).as("Spring Batch metadata table BATCH_JOB_INSTANCE should exist").isTrue();
+      Assertions.assertThat(rs.next())
+          .as("Spring Batch metadata table BATCH_JOB_INSTANCE should exist").isTrue();
     }
   }
 }
