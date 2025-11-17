@@ -22,9 +22,6 @@ logging:
     org.springframework.batch.core.repository.support: DEBUG
 ---
 spring:
-  config:
-    activate:
-      on-profile: pg
   application:
     name: tryout-spring-boot-batch
   datasource:
@@ -50,6 +47,10 @@ spring:
       enabled: ${BATCH_JOB_ENABLED:false}
     jdbc:
       initialize-schema: ${BATCH_JDBC_INITIALIZE_SCHEMA:always}  # always, never, embedded
+  liquibase:
+    enabled: true
+    liquibase-schema: ${database.liquibase_schema:liquibase_schema}
+    default-schema: ${database.default_schema:batch_schema}
 logging:
   level:
     org.springframework.jdbc.core: ${LOG_LEVEL:INFO}

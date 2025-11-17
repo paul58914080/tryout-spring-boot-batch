@@ -1,0 +1,5 @@
+DB_URL: jdbc:postgresql://localhost:30432/batch_database?currentSchema=batch_schema
+DB_USERNAME: sa
+DB_PASSWORD:
+DB_SCHEMA: batch_schema
+BATCH_JDBC_INITIALIZE_SCHEMA: always
